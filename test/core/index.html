@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Glitch (core) Test Suite</title>
+	<link rel="stylesheet" href="../qunit/qunit.css" media="screen">
+	<script src="../qunit/qunit.js"></script>
+	<script>
+		var defaultbuf = [],
+			defaultGlitch = {},
+			defaultOnerror = function( msg, url, line, err ) {
+				defaultbuf.push( err );
+				return true;
+			};
+		window.Glitch = defaultGlitch;
+		window.onerror = defaultOnerror;
+	</script>
+	<script src="../../glitch.js"></script>
+	<script>
+		var firstbuf = [],
+			firstGlitch = window.Glitch,
+			firstOnerror = window.onerror;
+		Glitch.bind( function( error ) {
+			firstbuf.push( error );
+			return false;
+		} );
+	</script>
+	<script src="../../glitch.js"></script>
+	<script src="../core.js"></script>
+</head>
+<body>
+	<h1 id="qunit-header">Glitch (core) Test Suite</h1>
+	<h2 id="qunit-banner"></h2>
+	<div id="qunit-testrunner-toolbar"></div>
+	<h2 id="qunit-userAgent"></h2>
+	<ol id="qunit-tests"></ol>
+	<div id="qunit-fixture"><div><span>test markup</span></div></div>
+</body>
+</html>
