@@ -12,7 +12,7 @@
 
 // main function / namespace
 // wraps and executes the given function
-var Glitch = function( fn ) { return Glitch.wrap( fn )(); },
+var Glitch = function( fn, args ) { return Glitch.wrap( fn ).apply( this, args || [] ); },
 
 	// functions to be notified when an error occurs
 	listeners = [];
