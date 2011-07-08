@@ -38,7 +38,7 @@ Glitch adds one object to the global namespace, `Glitch`, with a number of metho
 
 *   `Glitch.trigger( error )`
 
-*   `Glitch.setTimeout( function, delay )`
+*   `Glitch.setTimeout( function, delay )`  
     `Glitch.setInterval( function, delay )`
 
 *   `Glitch.noConflict( [removeAll] )`
