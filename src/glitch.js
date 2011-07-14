@@ -15,10 +15,15 @@
 var Glitch = function( fn, args ) { return Glitch.wrap( fn ).apply( this, args || [] ); },
 
 	// functions to be notified when an error occurs
-	listeners = [];
+	listeners = [],
+
+	// whether we should keep quiet and not tell the browser about our troubles
+	muted = false,
+
+	// a flag to indicate when we re-throw an error so it bubbles up to the browser
+	handled = false;
 
 extend( Glitch, {
-	// wraps functions in a try/catch
 	wrap: function( fn ) {
 		var wrapped = fn;
 		if ( isFunction( fn ) && !fn.originalFunction ) {
@@ -27,7 +32,11 @@ extend( Glitch, {
 				try {
 					ret = fn.apply( this, arguments );
 				} catch ( error ) {
-					Glitch.trigger( error );
+					if ( Glitch.trigger( error ) !== false && !muted ) {
+						handled = true;
+						window.setTimeout( function() { handled = false; }, 5000 ); // XXX hack
+						throw error;
+					}
 				}
 				return ret;
 			};
@@ -87,6 +96,16 @@ extend( Glitch, {
 		return window.setInterval( this.wrap( fn ), delay );
 	},
 
+	mute: function() {
+		muted = true;
+		return this;
+	},
+
+	unmute: function() {
+		muted = false;
+		return this;
+	},
+
 	noConflict: function( removeAll ) {
 		window.Glitch = _Glitch;
 		if ( removeAll ) {
@@ -108,23 +127,21 @@ window.onerror = onerror;
  */
 
 function onerror( message, url, lineNumber, error ) {
-	if ( !isString( message ) || !isString( url ) || !isNumber( lineNumber ) ) {
-		return;
-	}
+	if ( isString( message ) && isString( url ) && isNumber( lineNumber ) && !handled ) {
+		if ( arguments.length < 4 ) {
+			// XXX create a "real" error object?
+			error = {
+				message: message || "",
+				fileName: url || "",
+				lineNumber: lineNumber || 0
+			};
+		}
 
-	if ( arguments.length < 4 ) {
-		// XXX create a "real" error object?
-		error = {
-			message: message || "",
-			fileName: url || "",
-			lineNumber: lineNumber || 0
-		};
+		// XXX traditionally, window.onerror returns true to signal it has "handled" the error
+		// but the HTML5 spec (and Chrome 10+) says to return false (?!?)
+		// we'll keep returning true to prevent IE from reporting errors
+		return ( !Glitch.trigger( error ) && !muted ) || undefined;
 	}
-
-	// XXX traditionally, window.onerror returns true to signal it has "handled" the error
-	// but the HTML5 spec (and Chrome 10+) says to return false (?!?)
-	// we'll keep returning true to prevent IE from reporting errors
-	return !Glitch.trigger( error ) || undefined;
 }
 
 

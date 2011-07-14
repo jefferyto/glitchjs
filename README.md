@@ -34,12 +34,17 @@ Glitch adds one object to the global namespace, `Glitch`, with a number of metho
 
 *   `Glitch.bind( function(error) )`
 
-*   `Glitch.unbind( function(error) )`
+*   `Glitch.unbind( [function(error)] )`
 
 *   `Glitch.trigger( error )`
 
-*   `Glitch.setTimeout( function, delay )`  
-    `Glitch.setInterval( function, delay )`
+*   `Glitch.setTimeout( function, delay )`
+
+*   `Glitch.setInterval( function, delay )`
+
+*   `Glitch.mute()`
+
+*   `Glitch.unmute()`
 
 *   `Glitch.noConflict( [removeAll] )`
 
@@ -55,8 +60,17 @@ Plugins for other libraries
 jQuery plugin requires jQuery 1.3 or above
 
 
+
 Todo
 ----
 
 cross browser stack trace?
+
+
+
+License
+-------
+
+Copyright 2011, Jeffery To  
+Dual licensed under the MIT or GPL Version 2 licenses.
 
