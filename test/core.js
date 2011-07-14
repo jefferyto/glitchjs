@@ -87,14 +87,16 @@ test( "Glitch/add/remove/trigger", 3, function() {
 	Glitch( function() { throw "e"; } );
 	Glitch.trigger( "f" );
 
+	Glitch( function( a, b, c ) { throw a + b.d + c; }, [ 'a', { d: 'rg' }, 's' ] );
+
 	Glitch.unbind();
 
-	Glitch( function () { throw "g"; } );
+	Glitch( function() { throw "g"; } );
 	Glitch.trigger( "h" );
 
-	deepEqual( buf, [ "a", "b", "c", "c 2", "d", "d 2", "e", "f" ], "handled expected errors" );
-	deepEqual( firstbuf, [ "a", "b", "c", "d", "e", "f", "g", "h" ], "handled expected errors (first)" );
-	deepEqual( defaultbuf, [ "a", "b", "c", "d", "e", "f", "g", "h" ], "handled expected errors (default)" );
+	deepEqual( buf, [ "a", "b", "c", "c 2", "d", "d 2", "e", "f", "args" ], "handled expected errors" );
+	deepEqual( firstbuf, [ "a", "b", "c", "d", "e", "f", "args", "g", "h" ], "handled expected errors (first)" );
+	deepEqual( defaultbuf, [ "a", "b", "c", "d", "e", "f", "args", "g", "h" ], "handled expected errors (default)" );
 
 	teardownErrorHandling();
 } );
