@@ -21,7 +21,10 @@ var Glitch = function( fn, args ) { return Glitch.wrap( fn ).apply( this, args |
 	muted = false,
 
 	// a flag to indicate when we re-throw an error so it bubbles up to the browser
-	handled = false;
+	handled = false,
+
+	// a timeout ID to switch off the handled flag
+	handledId;
 
 extend( Glitch, {
 	wrap: function( fn ) {
@@ -34,7 +37,8 @@ extend( Glitch, {
 				} catch ( error ) {
 					if ( Glitch.trigger( error ) !== false && !muted ) {
 						handled = true;
-						window.setTimeout( function() { handled = false; }, 5000 ); // XXX hack
+						window.clearTimeout( handledId );
+						handledId = window.setTimeout( function() { handled = false; }, 5000 ); // XXX hack
 						throw error;
 					}
 				}
@@ -127,21 +131,31 @@ window.onerror = onerror;
  */
 
 function onerror( message, url, lineNumber, error ) {
-	if ( isString( message ) && isString( url ) && isNumber( lineNumber ) && !handled ) {
-		if ( arguments.length < 4 ) {
-			// XXX create a "real" error object?
-			error = {
-				message: message || "",
-				fileName: url || "",
-				lineNumber: lineNumber || 0
-			};
-		}
+	var ret;
 
-		// XXX traditionally, window.onerror returns true to signal it has "handled" the error
-		// but the HTML5 spec (and Chrome 10+) says to return false (?!?)
-		// we'll keep returning true to prevent IE from reporting errors
-		return ( !Glitch.trigger( error ) && !muted ) || undefined;
+	if ( isString( message ) && isString( url ) && isNumber( lineNumber ) ) {
+		if ( !handled ) {
+			if ( arguments.length < 4 ) {
+				// XXX create a "real" error object?
+				error = {
+					message: message || "",
+					fileName: url || "",
+					lineNumber: lineNumber || 0
+				};
+			}
+
+			// XXX traditionally, window.onerror returns true to signal it has "handled" the error
+			// but the HTML5 spec (and Chrome 10+) says to return false (?!?)
+			// we'll keep returning true to prevent IE from reporting errors
+			ret = ( !Glitch.trigger( error ) && !muted ) || undefined;
+
+		} else {
+			window.clearTimeout( handledId );
+			handled = false;
+		}
 	}
+
+	return ret;
 }
 
 
