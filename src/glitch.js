@@ -35,7 +35,7 @@ extend( Glitch, {
 				try {
 					ret = fn.apply( this, arguments );
 				} catch ( error ) {
-					if ( Glitch.trigger( error ) !== false && !muted ) {
+					if ( Glitch.trigger( error ) !== false && !muted && window.onerror === onerror ) {
 						handled = true;
 						window.clearTimeout( handledId );
 						handledId = window.setTimeout( function() { handled = false; }, 5000 ); // XXX hack
