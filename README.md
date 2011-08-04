@@ -82,7 +82,7 @@ Getting started
 3.  Add an error handler with `Glitch.bind()` to do something (send an error report to your server, show a message to the user, etc.) if an error occurs:
 
         Glitch.bind( function( error ) {
-        	alert( "Oops, that wasn't support to happen :-(" );
+        	alert( "Oops, that wasn't support to happen (-_-;)" );
         } );
 
 ### Using Glitch with jQuery
