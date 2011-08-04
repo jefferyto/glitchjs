@@ -71,13 +71,17 @@ Getting started
                 } );
             } );
 
-    *   Functions called asynchronously with `window.setTimeout()` or `window.setInterval()`: Use `Glitch.wrap()` to wrap your functions, or use `Glitch.setTimeout()` and `Glitch.setInterval()` to save some typing:
+    *   Functions called asynchronously with `window.setTimeout()` or `window.setInterval()`: Use `Glitch.wrap()` to wrap your functions or use `Glitch.setTimeout()` and `Glitch.setInterval()` to save some typing:
 
             Glitch.setTimeout( function() {
                 alert( "I hope you haven't been waiting for too long" );
             }, 5000 );
 
-    *   "Top-level / main" functions
+    *   "Top-level / main" functions: Use `Glitch.wrap()` to wrap your top-level functions or use `Glitch()` to wrap immediate / self-executing functions:
+
+            Glitch( function() {
+                var my_private_variable = "I'm inside a closure!";
+            } );
 
 3.  Add an error handler with `Glitch.bind()` to do something (send an error report to your server, show a message to the user, etc.) if an error occurs:
 
