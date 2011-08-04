@@ -13,7 +13,7 @@ Introduction
 It seems like almost anything can happen in the user's browser, for example:
 
 *   Bug in an obscure browser
-*   [JavaScript blocked by a corporate firewall][intro_1]
+*   [JavaScript selectively blocked by a corporate firewall][intro_1]
 *   Third-party data feed goes down unexpectedly
 *   Coding mistake that got through testing
 
