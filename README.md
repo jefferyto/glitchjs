@@ -59,37 +59,44 @@ Getting started
 
 1.  Include Glitch in your HTML:
 
-        <script src="glitch.min.js"></script>
+    ~~~~~ html
+    <script src="glitch.min.js"></script>
+    ~~~~~
 
 2.  Wrap your functions so that Glitch can catch any errors:
 
     *   Event handlers (including Ajax handlers): Use `Glitch.wrap()` to wrap your handlers:
 
-        ``` javascript
-            window.onload = Glitch.wrap( function() {
-                document.body.onclick = Glitch.wrap( function() {
-                    alert( "Why did you click my body?" );
-                } );
+        ~~~~~ javascript
+        window.onload = Glitch.wrap( function() {
+            document.body.onclick = Glitch.wrap( function() {
+                alert( "Why did you click my body?" );
             } );
-        ```
+        } );
+        ~~~~~
 
     *   Functions called asynchronously with `window.setTimeout()` or `window.setInterval()`: Use `Glitch.wrap()` to wrap your functions or use `Glitch.setTimeout()` and `Glitch.setInterval()` to save some typing:
 
-            Glitch.setTimeout( function() {
-                alert( "I hope you haven't been waiting for too long" );
-            }, 5000 );
+        ~~~~~ javascript
+        Glitch.setTimeout( function() {
+            alert( "I hope you haven't been waiting for too long" );
+        }, 5000 );
+        ~~~~~
 
     *   "Top-level / main" functions: Use `Glitch.wrap()` to wrap your top-level functions or use `Glitch()` to wrap immediate / self-executing functions:
 
-            Glitch( function() {
-                var my_private_variable = "I'm inside a closure!";
-            } );
+        ~~~~~ javascript
+        Glitch( function() {
+            var my_private_variable = "I'm inside a closure!";
+        } );
 
 3.  Add an error handler with `Glitch.bind()` to do something (send an error report to your server, show a message to the user, etc.) if an error occurs:
 
-        Glitch.bind( function( error ) {
-        	alert( "Oops, that wasn't support to happen (-_-;)" );
-        } );
+    ~~~~~ javascript
+    Glitch.bind( function( error ) {
+        alert( "Oops, that wasn't support to happen (-_-;)" );
+    } );
+    ~~~~~
 
 ### Using Glitch with jQuery
 
@@ -158,21 +165,27 @@ Glitch adds one object to the global namespace, `Glitch`, with a number of metho
 
     This is primarily a convenience function to wrap immediate / self-executing functions. For example, we can wrap this immediate function:
 
-        (function( $ ) {
-            $.fn.awesomePlugin = function() { ... };
-        })( jQuery );
+    ~~~~~ javascript
+    (function( $ ) {
+        $.fn.awesomePlugin = function() { ... };
+    })( jQuery );
+    ~~~~~
 
 	with `Glitch.wrap()`:
 
-        Glitch.wrap(function( $ ) {
-            $.fn.awesomePlugin = function() { ... };
-        })( jQuery );
+    ~~~~~ javascript
+    Glitch.wrap(function( $ ) {
+        $.fn.awesomePlugin = function() { ... };
+    })( jQuery );
+    ~~~~~
 
     or we can use `Glitch()` directly:
 
-        Glitch(function( $ ) {
-            $.fn.awesomePlugin = function() { ... };
-        }, [ jQuery ] );
+    ~~~~~ javascript
+    Glitch(function( $ ) {
+        $.fn.awesomePlugin = function() { ... };
+    }, [ jQuery ] );
+    ~~~~~
 
     Returns the value (if any) returned by the given function.
 
