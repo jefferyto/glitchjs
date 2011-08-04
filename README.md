@@ -65,11 +65,13 @@ Getting started
 
     *   Event handlers (including Ajax handlers): Use `Glitch.wrap()` to wrap your handlers:
 
+        ``` javascript
             window.onload = Glitch.wrap( function() {
                 document.body.onclick = Glitch.wrap( function() {
                     alert( "Why did you click my body?" );
                 } );
             } );
+        ```
 
     *   Functions called asynchronously with `window.setTimeout()` or `window.setInterval()`: Use `Glitch.wrap()` to wrap your functions or use `Glitch.setTimeout()` and `Glitch.setInterval()` to save some typing:
 
